@@ -32,4 +32,21 @@ return [
         'default_public' => false,
         'allow_filename_change' => true
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | API Configuration
+    |--------------------------------------------------------------------------
+    |
+    | routes_file: File containing the API endpoints
+    | controllers: Directory containing the API controllers
+    | transformers: Directory containing the API transformers
+    |
+    */
+
+    'api' => [
+        'routes_file' => 'app/http/API/v1/api_routes.php',
+        'controllers' => 'app/http/API/v1/Controllers',
+        'transformers' => 'app/http/API/v1/Transformers'
+    ],
 ];

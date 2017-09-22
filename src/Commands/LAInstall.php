@@ -129,7 +129,11 @@ class LAInstall extends Command
                 if(LAHelper::laravel_ver() == 5.3) {
                     $this->copyFile($from . "/app/Middleware/RedirectIfAuthenticated.php", $to . "/app/Http/Middleware/RedirectIfAuthenticated.php");
                 }
-                
+
+
+                // API
+                $this->line("\n" . 'Generating API related files...');
+                $this->copyFolder($from . "/app/API", $to . "/app/Http/API");
                 
                 // Config
                 $this->line('Generating Config...');
