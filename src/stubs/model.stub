@@ -23,6 +23,10 @@ class __model_class_name__ extends Model
     ];
     
     protected $guarded = [];
+
+    protected $fillable = [
+            __listing_cols__
+        ];
     
     protected $dates = ['deleted_at'];
 }

@@ -93,7 +93,7 @@ class __controller_class_name__ extends Controller
     {
         if(Module::hasAccess("__module_name__", "view")) {
             
-            $__singular_var__ = __model_name__::find($id);
+            $__singular_var__ = $this->api->get('api/__singular_var__s/' . $id);
             if(isset($__singular_var__->id)) {
                 $module = Module::get('__module_name__');
                 $module->row = $__singular_var__;
@@ -124,7 +124,7 @@ class __controller_class_name__ extends Controller
     public function edit($id)
     {
         if(Module::hasAccess("__module_name__", "edit")) {
-            $__singular_var__ = __model_name__::find($id);
+            $__singular_var__ = $this->api->get('api/__singular_var__s/' . $id);
             if(isset($__singular_var__->id)) {
                 $module = Module::get('__module_name__');
                 
@@ -182,7 +182,7 @@ class __controller_class_name__ extends Controller
     public function destroy($id)
     {
         if(Module::hasAccess("__module_name__", "delete")) {
-            __model_name__::find($id)->delete();
+            $this->api->delete('api/__singular_var__s/' . $id);
             
             // Redirecting to index() method
             return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');

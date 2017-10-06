@@ -47,11 +47,29 @@ class CodeGenerator
         
         // Listing columns
         $listing_cols = "";
+        $request_cols = "";
+        $response_cols = "";
+        $transformer_cols = "";
         foreach($config->module->fields as $field) {
+
             $listing_cols .= "'" . $field['colname'] . "', ";
+            $response_cols .= '"' . $field['colname'] . '": "' . $field['colname'] . '", ';
+
+            if($field['colname'] == 'id') {
+
+                $transformer_cols .= '"' . $field['colname'] . '" => (int) $' . $config->singularVar . '->' . $field['colname'] . '", ' . PHP_EOL;
+
+            } else {
+
+                $transformer_cols .= '"' . $field['colname'] . '" => $' . $config->singularVar . '->' . $field['colname'] . '", ' . PHP_EOL;
+                $request_cols .= '"' . $field['colname'] . '": "'. $field['colname'] . '", ';
+
+            }
         }
         $listing_cols = trim($listing_cols, ", ");
-        
+        $request_cols = trim($request_cols, ", ");
+        $response_cols = trim($response_cols, ", ");
+
         $md = str_replace("__listing_cols__", $listing_cols, $md);
         $md = str_replace("__view_folder__", $config->dbTableName, $md);
         $md = str_replace("__route_resource__", $config->dbTableName, $md);
@@ -59,6 +77,28 @@ class CodeGenerator
         $md = str_replace("__singular_var__", $config->singularVar, $md);
         
         file_put_contents(base_path('app/Http/Controllers/LA/' . $config->controllerName . ".php"), $md);
+
+        LAHelper::log("info", "Creating API controller...", $comm);
+        $apimd = file_get_contents($templateDirectory . "/controller_api.stub");
+
+        $apimd = str_replace("__controller_class_name__", $config->controllerName, $apimd);
+        $apimd = str_replace("__model_name__", $config->modelName, $apimd);
+        $apimd = str_replace("__listing_cols__", $listing_cols, $apimd);
+        $apimd = str_replace("__request_cols__", $request_cols, $apimd);
+        $apimd = str_replace("__response_cols__", $response_cols, $apimd);
+        $apimd = str_replace("__singular_var__", $config->singularVar, $apimd);
+
+        file_put_contents(base_path('app/Http/API/v1/Controllers/' . $config->controllerName . ".php"), $apimd);
+
+        LAHelper::log("info", "Creating Transformer...", $comm);
+        $trmd = file_get_contents($templateDirectory . "/transformer.stub");
+
+        $trmd = str_replace("__model_name__", $config->modelName, $trmd);
+        $trmd = str_replace("__transformer_cols__", $transformer_cols, $trmd);
+        $trmd = str_replace("__singular_var__", $config->singularVar, $trmd);
+
+        file_put_contents(base_path('app/Http/API/v1/Transformers/' . $config->modelName . "sTransformer.php"), $trmd);
+
     }
     
     /**
@@ -77,6 +117,16 @@ class CodeGenerator
         
         $md = str_replace("__model_class_name__", $config->modelName, $md);
         $md = str_replace("__db_table_name__", $config->dbTableName, $md);
+
+        // Listing columns
+        $listing_cols = "";
+        foreach($config->module->fields as $field) {
+            if($field['colname'] != 'id') {
+                $listing_cols .= "'" . $field['colname'] . "', ";
+            }
+        }
+
+        $md = str_replace("__listing_cols__", $listing_cols, $md);
         
         file_put_contents(base_path('app/Models/' . $config->modelName . ".php"), $md);
     }
@@ -187,6 +237,22 @@ class CodeGenerator
         $md = str_replace("__singular_cap_var__", $config->singularCapitalVar, $md);
         
         file_put_contents($routesFile, $md, FILE_APPEND);
+
+
+        LAHelper::log("info", "Appending api routes...", $comm);
+            $routesFileApi = app_path('Http/API/v1/api_routes.php');
+
+        $contents = file_get_contents($routesFileApi);
+        $contents = str_replace('});', '', $contents);
+        file_put_contents($routesFileApi, $contents);
+
+        $mdapi = file_get_contents($templateDirectory . "/routes_api.stub");
+
+        $mdapi = str_replace("__module_name__", $config->moduleName, $mdapi);
+        $mdapi = str_replace("__controller_class_name__", $config->controllerName, $mdapi);
+        $mdapi = str_replace("__singular_var__", $config->singularVar, $mdapi);
+
+        file_put_contents($routesFileApi, $mdapi, FILE_APPEND);
     }
     
     /**

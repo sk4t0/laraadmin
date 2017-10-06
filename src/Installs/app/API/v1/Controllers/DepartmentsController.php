@@ -86,7 +86,7 @@ class DepartmentsController extends Controller
     }
 
     /**
-     * Update an department
+     * Update a department
      *
      * Update a department with a `name` .
      *
@@ -109,7 +109,7 @@ class DepartmentsController extends Controller
     }
 
     /**
-     * Destroy an department
+     * Destroy a department
      *
      * Destroy a single department. No content returned
      *
