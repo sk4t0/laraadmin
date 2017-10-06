@@ -145,7 +145,7 @@ class ModuleController extends Controller
         \File::delete(app_path('/Http/API/v1/Controllers/' . $module->name . 'Controller.php'));
 
         // Delete Transformer
-        \File::delete(app_path('/Http/API/v1/Controllers/' . $module->name . 'Transformer.php'));
+        \File::delete(app_path('/Http/API/v1/Transformers/' . $module->name . 'Transformer.php'));
         
         // Delete Model
         if($module->model == "User" || $module->model == "Role" || $module->model == "Permission") {
