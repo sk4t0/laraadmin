@@ -1,10 +1,7 @@
 <?php
 /**
- * Model generated using LaraAdmin
+ * Model genrated using LaraAdmin
  * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
  */
 
 namespace App\Models;
@@ -23,6 +20,15 @@ class Organization extends Model
     ];
 
 	protected $guarded = [];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'profile_image', 'name', 'email', 'phone', 'website', 'assigned_to', 'city'
+    ];
 
 	protected $dates = ['deleted_at'];
 }

@@ -1,10 +1,7 @@
 <?php
 /**
- * Model generated using LaraAdmin
+ * Model genrated using LaraAdmin
  * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
  */
 
 namespace App\Models;
@@ -20,6 +17,15 @@ class Department extends Model
 	
 	protected $hidden = [
         
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name'
     ];
 
 	protected $guarded = [];
