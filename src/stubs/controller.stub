@@ -28,17 +28,6 @@ class __controller_class_name__ extends Controller
     public $view_col = '__view_column__';
     public $listing_cols = [__listing_cols__];
 
-    public function __construct() {
-        // Field Access of Listing Columns
-        if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
-            $this->middleware(function ($request, $next) {
-                $this->listing_cols = ModuleFields::listingColumnAccessScan('__model_name__s', $this->listing_cols);
-                return $next($request);
-            });
-        } else {
-            $this->listing_cols = ModuleFields::listingColumnAccessScan('__model_name__s', $this->listing_cols);
-        }
-    }
     
     /**
      * Display a listing of the __module_name__.
@@ -52,7 +41,7 @@ class __controller_class_name__ extends Controller
         if(Module::hasAccess($module->id)) {
             return View('la.__view_folder__.index', [
                 'show_actions' => $this->show_action,
-                'listing_cols' => Module::getListingColumns('__module_name__'),
+                'listing_cols' => $this->listing_cols,
                 'module' => $module
             ]);
         } else {
@@ -214,7 +203,7 @@ class __controller_class_name__ extends Controller
     public function dtajax(Request $request)
     {
         $module = Module::get('__module_name__');
-        $listing_cols = Module::getListingColumns('__module_name__');
+        $listing_cols = $this->listing_cols;
         
         $values = DB::table('__db_table_name__')->select($listing_cols)->whereNull('deleted_at');
         $out = Datatables::of($values)->make();

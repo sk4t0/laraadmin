@@ -15,7 +15,7 @@ use App\Transformers\__model_name__sTransformer;
 
 
 /**
- * Departments resource representation.
+ * __model_name__s resource representation.
  *
  * @Resource("__model_name__s", uri="/__singular_var__s")
  */

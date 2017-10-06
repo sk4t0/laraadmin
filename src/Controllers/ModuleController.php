@@ -140,6 +140,12 @@ class ModuleController extends Controller
         
         // Delete Controller
         \File::delete(app_path('/Http/Controllers/LA/' . $module->name . 'Controller.php'));
+
+        // Delete API Controller
+        \File::delete(app_path('/Http/API/v1/Controllers/' . $module->name . 'Controller.php'));
+
+        // Delete Transformer
+        \File::delete(app_path('/Http/API/v1/Controllers/' . $module->name . 'Transformer.php'));
         
         // Delete Model
         if($module->model == "User" || $module->model == "Role" || $module->model == "Permission") {
@@ -181,6 +187,23 @@ class ModuleController extends Controller
             $fileData = file_get_contents($file_admin_routes);
             $fileData = str_replace($line, "", $fileData);
             file_put_contents($file_admin_routes, $fileData);
+        }
+
+        // Delete API Routes
+
+        $file_api_routes = base_path("/app/Http/API/v1/api_routes.php");
+
+        while(LAHelper::getLineWithString($file_api_routes, $module->name . "Controller") != -1) {
+            $line = LAHelper::getLineWithString($file_api_routes,  $module->name . 'Controller');
+            $fileData = file_get_contents($file_api_routes);
+            $fileData = str_replace($line, "", $fileData);
+            file_put_contents($file_api_routes, $fileData);
+        }
+        if(LAHelper::getLineWithString($file_api_routes, "//  " . $module->name) != -1) {
+            $line = LAHelper::getLineWithString($file_api_routes, "//  " . $module->name);
+            $fileData = file_get_contents($file_api_routes);
+            $fileData = str_replace($line, "", $fileData);
+            file_put_contents($file_api_routes, $fileData);
         }
         
         // Delete Table
@@ -446,6 +469,8 @@ class ModuleController extends Controller
         
         $arr = array();
         $arr[] = "app/Http/Controllers/LA/" . $module->controller . ".php";
+        $arr[] = "app/Http/API/v1/Controllers/" . $module->controller . ".php";
+        $arr[] = "app/Http/API/v1/Transformers/" . $module->model . "sTransformer.php";
         $arr[] = "app/Models/" . $module->model . ".php";
         $views = scandir(resource_path('views/la/' . $module->name_db));
         foreach($views as $view) {
