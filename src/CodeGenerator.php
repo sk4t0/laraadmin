@@ -46,25 +46,16 @@ class CodeGenerator
         $md = str_replace("__view_column__", $config->module->view_col, $md);
         
         // Listing columns
-        $listing_cols = "";
-        $request_cols = "";
-        $response_cols = "";
-        $transformer_cols = "";
+        $listing_cols = "'id',";
+        $request_cols = '';
+        $response_cols = '"id": "id", ';
+        $transformer_cols = '"id" => (int) $' . $config->singularVar . '->id, ' . PHP_EOL;
         foreach($config->module->fields as $field) {
 
             $listing_cols .= "'" . $field['colname'] . "', ";
             $response_cols .= '"' . $field['colname'] . '": "' . $field['colname'] . '", ';
-
-            if($field['colname'] == 'id') {
-
-                $transformer_cols .= '"' . $field['colname'] . '" => (int) $' . $config->singularVar . '->' . $field['colname'] . '", ' . PHP_EOL;
-
-            } else {
-
-                $transformer_cols .= '"' . $field['colname'] . '" => $' . $config->singularVar . '->' . $field['colname'] . '", ' . PHP_EOL;
-                $request_cols .= '"' . $field['colname'] . '": "'. $field['colname'] . '", ';
-
-            }
+            $transformer_cols .= '            "' . $field['colname'] . '" => $' . $config->singularVar . '->' . $field['colname'] . ', ' . PHP_EOL;
+            $request_cols .= '"' . $field['colname'] . '": "'. $field['colname'] . '", ';
         }
         $listing_cols = trim($listing_cols, ", ");
         $request_cols = trim($request_cols, ", ");
@@ -121,9 +112,7 @@ class CodeGenerator
         // Listing columns
         $listing_cols = "";
         foreach($config->module->fields as $field) {
-            if($field['colname'] != 'id') {
-                $listing_cols .= "'" . $field['colname'] . "', ";
-            }
+            $listing_cols .= "'" . $field['colname'] . "', ";
         }
 
         $md = str_replace("__listing_cols__", $listing_cols, $md);

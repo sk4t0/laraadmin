@@ -25,6 +25,20 @@ use App\Models\__model_name__;
 class __controller_class_name__ extends Controller
 {
     public $show_action = true;
+    public $view_col = '__view_column__';
+    public $listing_cols = [__listing_cols__];
+
+    public function __construct() {
+        // Field Access of Listing Columns
+        if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
+            $this->middleware(function ($request, $next) {
+                $this->listing_cols = ModuleFields::listingColumnAccessScan('__model_name__s', $this->listing_cols);
+                return $next($request);
+            });
+        } else {
+            $this->listing_cols = ModuleFields::listingColumnAccessScan('__model_name__s', $this->listing_cols);
+        }
+    }
     
     /**
      * Display a listing of the __module_name__.
