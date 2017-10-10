@@ -25,7 +25,7 @@ use DB;
 class LAInstall extends Command
 {
     // Model Names to be handled during Install
-    var $modelsInstalled = ["User", "Role", "Permission", "Employee", "Department", "Upload", "Organization", "Backup"];
+    var $modelsInstalled = ["User", "Role", "Permission", "Employee", "Department", "Organization", "Backup"];
     
     // The command signature.
     protected $signature = 'la:install';
