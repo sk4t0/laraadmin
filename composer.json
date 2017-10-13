@@ -18,7 +18,9 @@
         "doctrine/dbal": "~2.3",
         "zizaco/entrust": "1.7.0",
         "spatie/laravel-backup": "^3.0.0",
-        "dingo/api": "1.0.*@dev"
+        "dingo/api": "1.0.*@dev",
+        "laravolt/avatar": "^2.0",
+        "symfony/yaml": "^3.3"
     },
     "authors": [
         {

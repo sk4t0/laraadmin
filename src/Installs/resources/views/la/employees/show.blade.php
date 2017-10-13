@@ -11,7 +11,7 @@
 		<div class="col-md-4">
 			<div class="row">
 				<div class="col-md-3">
-					<img class="profile-image" src="{{ Gravatar::fallback(asset('/img/avatar5.png'))->get(Auth::user()->email, ['size'=>400]) }}" alt="">
+					<img class="profile-image" src="{{ Avatar::create(Auth::user()->name)->toBase64() }}" alt="">
 				</div>
 				<div class="col-md-9">
 					<h4 class="name">{{ $employee->$view_col }}</h4>
