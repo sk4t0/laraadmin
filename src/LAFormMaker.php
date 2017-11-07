@@ -689,7 +689,7 @@ class LAFormMaker
                             $view_col = $view_col_test_2;
                         } else {
                             // retrieve the second column name which comes after "id"
-                            $arr2 = $result[0]->toArray();
+                            $arr2 = get_object_vars($result[0]);
                             $arr2 = array_keys($arr2);
                             $view_col = $arr2[1];
                             // if second column not exists
