@@ -257,21 +257,75 @@ class ModuleFields extends Model
     {
         $external_table_name = substr($field->popup_vals, 1);
         if(Schema::hasTable($external_table_name)) {
-            $external_value = DB::table($external_table_name)->where('id', $value_id)->get();
-            if(isset($external_value[0])) {
-                $external_module = DB::table('modules')->where('name_db', $external_table_name)->first();
-                if(isset($external_module->view_col)) {
-                    $external_value_viewcol_name = $external_module->view_col;
-                    return $external_value[0]->$external_value_viewcol_name;
-                } else {
-                    if(isset($external_value[0]->{"name"})) {
-                        return $external_value[0]->name;
-                    } else if(isset($external_value[0]->{"title"})) {
-                        return $external_value[0]->title;
+            if(substr($value_id, 0, 1) == '[' && substr($value_id, -1) == ']'){
+                $str = substr($value_id, 1);
+                $str = substr($str, 0,-1);
+                $value_id = explode(',', $str);
+                $result = "";
+                $tot = count($value_id);
+                for ($i = 0; $i < $tot; $i++){
+                    $id = substr($value_id[$i], 1);
+                    $id = substr($id, 0, -1);
+                    $external_value = DB::table($external_table_name)->where('id', '9f3acd77-3ab5-492a-ae9d-c2a3be0a0945')->first();
+                    $external_module = DB::table('modules')->where('name_db', $external_table_name)->first();
+                    if(!empty($external_value)) {
+                        if(isset($external_module->view_col)) {
+                            $external_value_viewcol_name = $external_module->view_col;
+                            if($i == 0){
+                                $result .= $external_value->$external_value_viewcol_name;
+                            } else {
+                                $result .= ', ' . $external_value->$external_value_viewcol_name;
+                            }
+                        } else {
+                            if(isset($external_value->{"name"})) {
+                                if($i == 0){
+                                    $result .= $external_value->name;
+                                } else {
+                                    $result .= ', ' . $external_value->name;
+                                }
+                            } elseif(isset($external_value->{"title"})) {
+                                if($i == 0){
+                                    $result .= $external_value->title;
+                                } else {
+                                    $result .= ', ' . $external_value->title;
+                                }
+                            } else {
+                                if (is_array($external_value)){
+                                    $arr = $external_value;
+                                }else{
+                                    $arr = get_object_vars($external_value);
+                                }
+                                $keys = array_keys($arr);
+                                $key = $keys[1];
+                                if($i == 0){
+                                    $result .= $arr[$key];
+                                } else {
+                                    $result .= ', ' . $arr[$key];
+                                }
+                            }
+                        }
+                    } else {
+                        $result = $str;
                     }
                 }
+                return $result;
             } else {
-                return $value_id;
+                $external_value = DB::table($external_table_name)->where('id', $value_id)->get();
+                if(isset($external_value[0])) {
+                    $external_module = DB::table('modules')->where('name_db', $external_table_name)->first();
+                    if(isset($external_module->view_col)) {
+                        $external_value_viewcol_name = $external_module->view_col;
+                        return $external_value[0]->$external_value_viewcol_name;
+                    } else {
+                        if(isset($external_value[0]->{"name"})) {
+                            return $external_value[0]->name;
+                        } else if(isset($external_value[0]->{"title"})) {
+                            return $external_value[0]->title;
+                        }
+                    }
+                } else {
+                    return $value_id;
+                }
             }
         } else {
             return $value_id;
