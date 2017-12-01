@@ -975,7 +975,7 @@ class LAFormMaker
         $out = "";
         foreach($fields as $field) {
             // Use input method of this class to generate all Module fields
-            $out .= LAFormMaker::input($module, $field);
+            $out .= LAFormMaker::input($module, $field, null, null, 'form-control', array('id' => $field . '_' . $module->name));
         }
         return $out;
     }
