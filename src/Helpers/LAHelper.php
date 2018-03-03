@@ -40,7 +40,7 @@ class LAHelper
         $array['module'] = ucfirst(str_plural($module_name));
         $array['label'] = ucfirst(str_plural($module_name));
         $array['table'] = strtolower(str_plural($module_name));
-        $array['model'] = ucfirst(str_singular($module_name));
+        $array['model'] = ucwords(str_singular($module_name), '_');
         $array['fa_icon'] = $icon;
         $array['controller'] = $array['module'] . "Controller";
         $array['singular_l'] = strtolower(str_singular($module_name));

@@ -971,7 +971,7 @@ class Module extends Model
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
                 $model = "App\\" . ucfirst(str_singular($module_name));
             } else {
-                $model = "App\\Models\\" . ucfirst(str_singular($module_name));
+                $model = "App\\Models\\" . ucfirst(str_singular($module->model));
             }
             
             $result = $model::all();
