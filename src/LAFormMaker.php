@@ -478,7 +478,12 @@ class LAFormMaker
                     }
                     // Override the edit value
                     if(isset($row) && isset($row->$field_name)) {
-                        $default_val = json_decode($row->$field_name);
+                        if(substr($field_name, -3) == '_id'){
+                            $default_val = json_decode(str_replace('"', '', $row->$field_name));
+                        }else{
+                            $default_val = json_decode($row->$field_name);
+                        }
+                        
                     }
                     
                     if($popup_vals != "") {

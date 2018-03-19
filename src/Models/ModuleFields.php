@@ -266,7 +266,7 @@ class ModuleFields extends Model
                 for ($i = 0; $i < $tot; $i++){
                     $id = substr($value_id[$i], 1);
                     $id = substr($id, 0, -1);
-                    $external_value = DB::table($external_table_name)->where('id', '9f3acd77-3ab5-492a-ae9d-c2a3be0a0945')->first();
+                    $external_value = DB::table($external_table_name)->where('id', $id)->first();
                     $external_module = DB::table('modules')->where('name_db', $external_table_name)->first();
                     if(!empty($external_value)) {
                         if(isset($external_module->view_col)) {
