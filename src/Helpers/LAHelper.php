@@ -413,18 +413,20 @@ class LAHelper
         $treeview = "";
         $subviewSign = "";
         if(count($childrens)) {
-            $treeview = " class=\"treeview\"";
-            $subviewSign = '<i class="fa fa-angle-left pull-right"></i>';
+            $treeview = "<span class=\"fa arrow\"></span>";
+            $subviewSign = '<span class="fa arrow"></span>';
         }
         $active_str = '';
+        $collapse = '';
         if($active) {
             $active_str = 'class="active"';
+            $collapse = 'in';
         }
         
-        $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . url(config("laraadmin.adminRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
+        $str = '<li' . $active_str . '><a href="' . url(config("laraadmin.adminRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
         
         if(count($childrens)) {
-            $str .= '<ul class="treeview-menu">';
+            $str .= '<ul class="nav nav-second-level collapse '.$collapse.'">';
             foreach($childrens as $children) {
                 $module = Module::get($children->url);
                 if(Module::hasAccess($module->id)) {
