@@ -423,7 +423,7 @@ class LAHelper
             $collapse = 'in';
         }
         
-        $str = '<li' . $active_str . '><a href="' . url(config("laraadmin.adminRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
+        $str = '<li ' . $active_str . '><a href="' . url(config("laraadmin.adminRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
         
         if(count($childrens)) {
             $str .= '<ul class="nav nav-second-level collapse '.$collapse.'">';
